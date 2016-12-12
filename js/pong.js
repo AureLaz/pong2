@@ -43,7 +43,7 @@ var render = function () {
 };
 //Fonction qui modifie la position de la raquette de l'ordinateur en fonction de la position du milieu de la balle
 Ordinateur.prototype.update = function (ball) {
-    var y_pos = balle.y -30;
+    var y_pos = balle.y - 30;
     var diff = -((this.raquette.y + (this.raquette.width / 2)) - y_pos);
     //Vitesse maximale au top
     if (diff < 0 && diff < -5) {
@@ -79,22 +79,22 @@ Joueur.prototype.update = function () {
     }
 };
 Raquette.prototype.move = function (x, y) {
-        this.x += x;
-        this.y += y;
-        this.x_speed = x;
-        this.y_speed = y;
-        //Si il se trouve tout en haut
-        if (this.y < 0) {
-            this.y = 0;
-            this.y_speed = 0;
-        }
-        //Si il se trouve tout en bas
-        else if (this.y + this.height > 600) {
-            this.y = 600 - this.height;
-            this.y_speed = 0;
-        }
+    this.x += x;
+    this.y += y;
+    this.x_speed = x;
+    this.y_speed = y;
+    //Si il se trouve tout en haut
+    if (this.y < 0) {
+        this.y = 0;
+        this.y_speed = 0;
     }
-    //Fonction qui initialise une raquette
+    //Si il se trouve tout en bas
+    else if (this.y + this.height > 600) {
+        this.y = 600 - this.height;
+        this.y_speed = 0;
+    }
+};
+//Fonction qui initialise une raquette
 function Raquette(x, y, width, height) {
     this.x = x;
     this.y = y;
