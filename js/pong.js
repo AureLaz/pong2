@@ -31,6 +31,7 @@ var recharge = function () {
 var update = function () {
     balle.update(ordinateur.raquette, joueur.raquette);
     joueur.update();
+    ordinateur.update(balle);
 };
 //fonction qui prend la taille la position et la couleur des éléments
 var render = function () {
@@ -40,17 +41,37 @@ var render = function () {
     ordinateur.render();
     balle.render();
 };
+//Fonction qui modifie la position de la raquette de l'ordinateur en fonction de la position du milieu de la balle
+Ordinateur.prototype.update = function (ball) {
+    var y_pos = balle.y -30;
+    var diff = -((this.raquette.y + (this.raquette.width / 2)) - y_pos);
+    //Vitesse maximale au top
+    if (diff < 0 && diff < -5) {
+        diff = -6;
+    }
+    //Vitesse maximale au bottom
+    else if (diff > 0 && diff > 5) {
+        diff = 6;
+    }
+    this.raquette.move(0, diff);
+    if (this.raquette.y < 0) {
+        this.raquette.y = 0;
+    }
+    else if (this.raquette.y + this.raquette.width > 900) {
+        this.raquette.y = 900 - this.raquette.width;
+    }
+};
 //Fonction qui modifie la position de la raquette en fonction de la touche appuyée
 Joueur.prototype.update = function () {
     for (var key in keysDown) {
         var value = Number(key);
         //Déplacement vers le haut
         if (value == 40) {
-            this.raquette.move(0, +5);
+            this.raquette.move(0, +6);
             //Déplacement vers le bas
         }
         else if (value == 38) {
-            this.raquette.move(0, -5);
+            this.raquette.move(0, -6);
         }
         else {
             this.raquette.move(0, 0);
@@ -152,21 +173,17 @@ Balle.prototype.update = function (raquette1, raquette2) {
         this.x = 450;
         this.y = 283;
     }
-    //TODO : la balle parcourt bien tout l'ecran mais la raquette1 ne prend pas de colisions
     //Si on se trouve du côté de l'ordinateur
     if (top_x > 450) {
-        );
         if (top_x >= raquette1.x && top_y < (raquette1.y + raquette1.height) && bottom_y > raquette1.y) {
-            alert("colision ordinateur"
             this.x_speed = -3;
             this.y_speed += (raquette1.y_speed / 2);
             this.x += this.x_speed;
         }
     }
     //Si on se trouve du côté du joueur
-    else if (top_x < 450) {
+    if (top_x < 37) {
         if (top_x > raquette2.x && top_y < (raquette2.y + raquette2.height) && bottom_y > raquette2.y) {
-            alert("colision jouer");
             this.x_speed = 3;
             this.y_speed += (raquette2.y_speed / 2);
             this.x += this.x_speed;
